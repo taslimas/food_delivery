@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}category{% endblock title %}
+  
+
+{% block main-content %}
+
+<div class="conatiner my-5">
+    <div class="row">
+        <div class="col-sm-3" style="width: 16%;">
+            {% for i in name %}
+            <div class="list-group">
+          
+             <a href="{% url 'category-title' i.name %}" class="list-group-item list-group-item-action" aria-current="true">
+             {{i.name}}
+             </a>
+         
+           </div>
+           {% endfor %}
+        
+        
+        
+       
+        </div>
+
+        <div class="col-sm-9">
+            <div class="row">
+             {% for j in food %}
+                <div class="col text-center mb-4">
+                    <a href="{% url 'fooddetail' j.id %}" class="btn">
+                    <div>  
+                <img src="{{j.food_image.url}}" style="width:90%;" />
+                <div class="fw-bold">{{j.name}}</div>
+                <div class="fw-bold text-danger">Rs.{{j.discount_price}}/-   
+                    <small class="fw-light text-decoration-line-through text-danger">
+                          {{j.price}}
+                    </small>
+           
+                </div>
+                </div>
+            </a>
+            </div>
+             {% endfor %}
+            </div>
+            </div>
+        </div>
+        </div>
+
+{% endblock main-content %}

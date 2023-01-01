@@ -1,0 +1,162 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>sign up</title> 
+<style>
+    /*custom font*/
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+/*basic reset*/
+* {margin: 0; padding: 0;}
+
+html {
+	height: 200%;
+	/*Image only BG fallback*/
+	
+	/*background = gradient + image pattern combo*/
+	background: 
+		linear-gradient(rgba(rgb(116, 116, 39),rgb(133, 69, 69)));
+}
+
+body {
+	height: auto;
+	font-family: montserrat, arial, verdana;
+	background: linear-gradient(rgb(225 179 158 / 80%), rgb(223 175 223 / 80%)), url(/static/images/login1.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+    overflow: hidden;
+
+    
+}
+/*form styles*/
+#msform {
+	
+    width: 500px;
+    margin: 60px auto;
+    /* height: 898px; */
+    text-align: center;
+    position: relative;
+    background: #c96969;
+    overflow: hidden;
+}
+#msform fieldset {
+	background: #c96969;
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 20px 30px;
+	box-sizing: border-box;
+	width: 90%;
+	margin: 0 10%;
+	
+	/*stacking fieldsets above each other*/
+	position: relative;
+}
+/*Hide all except first fieldset*/
+
+/*inputs*/
+#msform input, #msform textarea {
+	padding: 15px; 
+	border: 1px solid #ccc;
+	border-radius: 30px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: black;
+	font-size: 16px;
+	background: #f1eaea;
+}
+/*buttons*/
+#msform .action-button {
+	width: 100px;
+	background: #e5d622;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 6px;
+	cursor: pointer;
+	padding: 10px 5px;
+	margin: 10px 161px;
+}
+#msform .action-button:hover, #msform .action-button:focus {
+	box-shadow: 0 0 0 2px #0099CC, 0 0 0 3px #0099CC;
+}
+/*headings*/
+.fs-title {
+	font-size: 15px;
+	text-transform: uppercase;
+	color: #2C3E50;
+	margin-bottom: 10px;
+}
+input{
+    margin-left: 6px;
+	background: #e5b2b2;
+}
+
+</style>
+<body >
+
+	
+			
+				<form action="" method="post" novalidate class="shadow p-5" id="msform">
+					<h2 class="fs-title text-white">Login</h2>
+	  
+					{% csrf_token %}
+					{% for fm in form %}
+						<!-- {{fm.label_tag}} {{fm}} -->
+					{{fm}}	<small class="text-dark">{{fm.errors|striptags}}</small>
+                        
+					{% endfor %}
+					<input type="submit" value="Login" class="next action-button"/>
+
+					<div class="text-center text-dark fw-bold">
+						<small>
+							<a href="{% url 'password_reset' %}" class="text-dark fw-bold fs-8 " style="margin-left:20px;">Forgot Password?</a></small>
+						</small>
+				    </div>	
+					
+                    <div class="text-center text-dark fw-bold">
+                        <small>New User?
+                            <a href="{% url 'customer-registration' %}" class="text-white">Create an Account</a>
+                        </small>
+						
+                    </div>
+					{% if form.non_field_errors %}
+					{% for error in form.non_field_errors %}
+					<p class="alert alert-danger my-3">{{error}}</p>
+					{% endfor %}
+				{% endif %}
+			
+		{% if messages %}
+	  		{% for msg in messages %}
+			<div class="alert alert-{{msg.tags}}" role="alert">
+				{{msg}}
+			</div>
+		{% endfor %}
+	  	{% endif %}	 
+					
+	</form> 	
+
+
+				<script>
+					var form_fields = document.getElementsByTagName('input')
+					form_fields[1].placeholder='Username..';
+					
+					form_fields[2].placeholder='Enter password...';
+					
+			
+			
+					for (var field in form_fields){	
+						form_fields[field].className += ' form-control'
+					}
+				  </script>
+			
+</body>

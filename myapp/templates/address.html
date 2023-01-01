@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}address{% endblock title %}
+  
+
+{% block main-content %}
+<style>
+    .col-sm-3{
+        text-align: center;
+        width: 100%;
+    }
+    .mb-0{
+        font-size: 20px;
+    }
+    .mb-4{
+        margin-left: 22.5rem;
+        box-shadow: 0 0 4px 3px #9ba4b1;
+    }
+    
+    hr{
+        color: #0e22a7;
+    }
+</style>
+<div class="container py-5">
+    <div class="row" >
+        {% for add in address %}
+        <div class="col-lg-8">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    
+                    <h3>Address {{forloop.counter}}</h3>
+                   
+                    <hr>
+                    <div class="col-sm-9"></div>
+                    <p class="mb-0">Name : {{add.name}}</p>    <hr>
+                    <p class="mb-0">Locality : {{add.locality}}</p>    <hr>
+                    <p class="mb-0">City: {{add.city}}</p>    <hr>
+                    <p class="mb-0">State : {{add.state}}</p>    <hr>
+                    <p class="mb-0">Mobile : {{add.mobile}}</p>    <hr>
+                    <p class="mb-0">Pincode : {{add.pincode}}</p>    <hr>
+                    <p class="text-center"><a href="{% url 'update_address' pk=add.id %}" type="button" class="btn btn-success">Update Profile</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock main-content %}

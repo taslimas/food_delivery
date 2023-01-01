@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}profile{% endblock title %}
+  
+
+{% block main-content %}
+<style>
+   #msform {
+	
+    width: 700px;
+    margin: 0px auto;
+    /* height: 898px; */
+    text-align: center;
+    position: relative;
+    background: #ccb5b5;
+    overflow: hidden;
+}
+#msform fieldset {
+	background: #c96969;
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 20px 30px;
+	box-sizing: border-box;
+	width: 90%;
+	margin: 0 10%;
+	
+	/*stacking fieldsets above each other*/
+	position: relative;
+}
+/*Hide all except first fieldset*/
+
+/*inputs*/
+#msform input, #msform textarea {
+	padding: 15px; 
+	border: 1px solid #ccc;
+	border-radius: 30px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: black;
+	font-size: 16px;
+	background: #f1eaea;
+}
+/*buttons*/
+#msform .action-button {
+	width: 100px;
+	background: #e5d622;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 6px;
+	cursor: pointer;
+	padding: 10px 5px;
+	margin: 10px 161px;
+}
+#msform .action-button:hover, #msform .action-button:focus {
+	box-shadow: 0 0 0 2px #0099CC, 0 0 0 3px #0099CC;
+}
+/*headings*/
+.fs-title {
+	font-size: 15px;
+	text-transform: uppercase;
+	color: #2C3E50;
+	margin-bottom: 10px;
+}
+input{
+    margin-left: 6px;
+	background: #e5b2b2;
+}
+#msform select{
+    padding: 18px; 
+    border: 1px solid #ccc;
+	border-radius: 30px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: black;
+	font-size: 16px;
+	background: #f1eaea;
+    margin: 5px;
+}
+.d-grid{
+	display: grid!important;
+    line-height: 2px;
+    margin-left: 61px;
+    padding: 8px;
+}
+.text-capitalize{
+	text-align: center;
+}
+</style>
+<div class="container my-5">
+<div class="row">
+    <h3 style="text-align: center;">Welcome
+    <span class="text-capitalize">{{request.user}}</span></h3>
+	<hr>
+    <div class="col-sm-2 boder-end">
+        <ul class="list-unstyled">
+            <li class="d-grid">
+                <a href="{% url 'profile' %}" class="btn btn-primary">Profile</a>
+            </li>
+            <li class="d-grid">
+                <a href="{% url 'address' %}" class="btn btn-primary">Address</a>
+            </li>
+        </ul>
+    </div>
+    <form action="" method="post" novalidate class="shadow p-5" id="msform">
+        <h2 class="fs-title text-white">Create your account</h2>
+
+        {% csrf_token %}
+        {% for fm in form %}
+            <!-- {{fm.label_tag}} {{fm}} -->
+        {{fm}}	<small class="text-dark">{{fm.errors|striptags}}</small>
+            
+        {% endfor %}
+        <input type="submit" value="Submit" class="next action-button"/>
+
+            {% if form.non_field_errors %}
+			{% for er in form.non_field_errors %}
+			<p class="alert alert-danger my-3">{{er}}</p>
+			{% endfor %}
+	        {% endif %}
+
+	  	{% if messages %}
+	  		{% for msg in messages %}
+			<div class="alert alert-{{msg.tags}}" role="alert">
+				{{msg}}
+			</div>
+		{% endfor %}
+	  	{% endif %}	
+					
+        </form>
+    </div>
+</div>
+</div>
+<script>
+    var form_fields = document.getElementsByTagName('input')
+    form_fields[1].placeholder='Name..';
+    form_fields[2].placeholder='Name..';
+    form_fields[3].placeholder='Locality...';
+    form_fields[4].placeholder='City...';
+    form_fields[5].placeholder='Mobile...';
+    form_fields[6].placeholder='PinCode...';
+    for (var field in form_fields){	
+        form_fields[field].className += ' form-control'
+        form_fields[field].placeholder.style.color="black"
+    }
+  </script>
+{% endblock main-content %}
