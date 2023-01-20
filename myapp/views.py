@@ -11,8 +11,8 @@ from django.contrib.auth import authenticate,login
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.db.models import Q
-
-
+from django.views import View
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -140,6 +140,7 @@ def ChangePassword(request):
 
         
 #cart
+@login_required(login_url='login')
 def add_to_cart(request,pk):
     user=request.user
    
@@ -177,6 +178,9 @@ def show_cart(request):
 #             }
 #         return JsonResponse(data)
         
+class checkout(View):
+    def get(self,request):
+        return render(request,"checkout.html",locals())     
     
 
     
