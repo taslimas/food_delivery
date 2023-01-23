@@ -25,15 +25,17 @@ urlpatterns=[
      #cart
     path('add-to-cart/<int:pk>',views.add_to_cart,name='add-to-cart'),
     path('cart',views.show_cart,name='cart'),
-    path('checkout/',views.show_cart,name='checkout'),
-   
+    path('checkout/',views.checkout.as_view(),name='checkout'),
+    path('removeitem/<int:pk>',views.removeItem,name='removeitem'),
+    path('update-post',views.updateCart,name='updatecart'),
+    path('pluscart/',views.plus_cart),
     
     
     # forgot password
-   path('password_reset/',auth_view.PasswordResetView.as_view(template_name='password_reset.html', form_class=MypasswordResetForm),name='password_reset'),
-   path('password_reset/done/',auth_view.PasswordResetDoneView.as_view(template_name='password_reset_done.html'),name='password_reset_done'),
-   path('password_reset_confirm/<uidb64>/<token>/',auth_view.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html',form_class=MySetPasswordForm),name='password_reset_confirm'),
-   path('password_reset_complete/',auth_view.PasswordResetCompleteView.as_view(template_name='password-reset-complete.html'),
+    path('password_reset/',auth_view.PasswordResetView.as_view(template_name='password_reset.html', form_class=MypasswordResetForm),name='password_reset'),
+    path('password_reset/done/',auth_view.PasswordResetDoneView.as_view(template_name='password_reset_done.html'),name='password_reset_done'),
+    path('password_reset_confirm/<uidb64>/<token>/',auth_view.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html',form_class=MySetPasswordForm),name='password_reset_confirm'),
+    path('password_reset_complete/',auth_view.PasswordResetCompleteView.as_view(template_name='password-reset-complete.html'),
         name='password_reset_complete'),
   
     

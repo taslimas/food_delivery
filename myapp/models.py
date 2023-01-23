@@ -81,10 +81,16 @@ class Customer(models.Model):
 
 class Cart(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    food=models.ForeignKey(Food,on_delete=models.CASCADE)
-    quantity=models.IntegerField(default=1)
+    product=models.ForeignKey(Food,on_delete=models.CASCADE)
+    product_qty=models.IntegerField(null=False,blank=False,default=1)
+   
     
     @property
     def total_cost(self):
-        return self.quantity * self.food.discount_price
+        return self. product_qty * self.product.discount_price
+    
+class OrderPlaced(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    
+        
         

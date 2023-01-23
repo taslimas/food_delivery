@@ -14,5 +14,5 @@ class CustomerModelaAdmin(admin.ModelAdmin):
    
 @admin.register(Cart)
 class CartModelAdmin(admin.ModelAdmin):
-    list_display = ['id','user','food','quantity']    
+    list_display = ['id','user','product','product_qty']    
 

@@ -4,7 +4,19 @@
   
 
 {% block main-content %}
+<style>
+    ._p-qty .decrease_ {
+    position: relative;
+    right: -5px;
+    top: 3px;
+}
 
+._p-qty .increase_ {
+    position: relative;
+    top: 3px;
+    left: -5px;
+}
+</style>
 <div class="container my-5">
     <div class="row">
         
@@ -15,28 +27,31 @@
                 <div class="card-body">
                    
                     {% for item in cart %}
-                    <div class="row">
+                   
+                    <div class="row product-data">
                         <div class="col-sm-3 text-center align-self-center">
-                            <img src="{{item.food.food_image.url }}"  class="img-fluid img-thumbnail shadow-sm" height="150" width="150">
+                            <img src="{{item.product.food_image.url }}"  class="img-fluid img-thumbnail shadow-sm" height="150" width="150">
                         </div>
                         <div class="col-sm-9">
                             <div>
-                <h5>{{item.food.name}}</h5>
-                <p class="mb-2 text-muted small">{{item.food.description}}</p>
+                <h5>{{item.product.name}}</h5>
+                <p class="mb-2 text-muted small">{{item.product.description}}</p>
                 <div class="my-3">
+                    <input type="hidden" class="prod_id" value="{{item.product_id}}">
+                    {% csrf_token %}
+
                     <label for="quantity">Quantity:</label>
-                    <a class="minus-cart btn" pid={{item.food.id}} >
-                        <i class="fas fa-minus-square fa-lg"></i>
-                    </a>
-                    <span id="quantity">{{item.quantity}}</span>
-                    <a  class="plus-cart btn" pid={{item.food.id}} >
-                        <i class="fas fa-plus-square fa-lg"></i>
-                    </a>
+                    
+                      <a class="minus-cart btn" pid={{item.product.id}}>-</a>
+                      <!-- <input type="text" name="quantity" class="form-control qty-input text-cente" value="{{item.product_qty}}"> -->
+                      <span id="quantity">{{item.product_qty}}</span>
+                      <a class="plus-cart btn" pid={{item.product.id}}>+</a>
                     </div>
+                   
                     <div class="d-flex justify-content-between">
-                        <a href="#" class="remove-card btn btn-sm btn-secondary mr-3" pid={{item.food.id}}>Remove Item</a>
+                        <a href="{% url 'removeitem' item.product.id %}" class="remove-card btn btn-sm btn-secondary mr-3" pid={{item.product.id}}>Remove Item</a>
                         <p class="mb-0">
-                            <span><strong>Rs.{{item.food.discount_price}}</strong></span>
+                            <span><strong>Rs.{{item.product.discount_price}}</strong></span>
                         </p>
                     </div>
                 </div>
@@ -73,7 +88,32 @@
 
 </div>
 </div>
+<script src="{% static 'js/myscript.js' %}"></script>
+<script src="{% static 'js/all.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min' %}"></script>
+<!-- <script>
+(function ($) {
+    $('.changeQuantity').click(function(e){
+        e.preventDefault();
+        var product_id = $(this).closest('.product-data').find('.prod_id').val();
+        var product_qty = $(this).closest('.product_data').find('.qty-input').val();
+        var token = $('input[name=csrfmiddlewaretoken]').val();
+        $ajax({
+            method:'POST',
+            url:'/update-cart',
+            data:{
+                'product_id' : product_id,
+                'quantity' : product_qty,
+                csrfmiddlewaretoekn:token
+         },
+            success:function(response){
+                alertify.success(reponsive.status)
+            }
+        });
+    });
 
+    })(jQuery);
+</script> -->
 
 
 {% endblock main-content %}

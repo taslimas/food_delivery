@@ -145,44 +145,71 @@ def add_to_cart(request,pk):
     user=request.user
    
     food=Food.objects.get(pk=pk)
-    Cart(user=user,food=food).save()
+    Cart(user=user,product=food).save()
     return redirect('/cart')
     
 def show_cart(request):
    user=request.user
    cart=Cart.objects.filter(user=user)
+   
    amount=0
    for p in cart:
-       value = p.quantity * p.food.discount_price
+       value = p.product_qty * p.product.discount_price
        amount= amount + value
        totalamount= amount + 40   
    return render(request,'addtocart.html',locals())
 
-# def plus_cart(request):
-#     if request.method == 'GET':
-#         prod_id = request.GET['prod_id']
-#         c = Cart.objects.get(Q(food=prod_id) & Q(user=request.user))
-#         c.quantity+=1
-#         c.save()
-#         user=request.user
-#         cart=Cart.objects.filter(user=user)
-#         amount=0
-#         for p in cart:
-#             value = p.quantity * p.food.discount_price
-#             amount= amount + value
-#         totalamount= amount + 40  
-#         data={
-#             'quantity':c.quantity,
-#             'amount':amount,
-#             'totalamount':totalamount
-#             }
-#         return JsonResponse(data)
+def plus_cart(request):
+    if request.method == 'GET':
+        prod_id = request.GET['product_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.product_qty+=1
+        c.save()
+        user=request.user
+        cart=Cart.objects.filter(user=user)
+        amount=0
+        for p in cart:
+            value = p.product_qty * p.product.discount_price
+            amount= amount + value
+        totalamount= amount + 40  
+        data={
+            'quantity':c.product_qty,
+            'amount':amount,
+            'totalamount':totalamount
+            }
+        return JsonResponse(data)
         
 class checkout(View):
     def get(self,request):
-        return render(request,"checkout.html",locals())     
-    
+        return render(request,"checkout.html",locals())    
 
+def removeItem(request,pk):
+    food=Food.objects.get(pk=pk)
+    cart=Cart.objects.filter(product=food).delete()
+    return redirect('cart')
+
+def updateCart(request):
+    if request.method == 'POST':
+        prod_id = int(request.POST.get('product_id'))
+        if(Cart.objects.filter(user=request.user,product_id=prod_id)):
+            prod_qty=int(request.POST.get('product_qty'))
+            cart=Cart.objects.get(product_id=prod_id,user=request.user)
+            cart.quantity=prod_qty
+            cart.save()
+            return JsonResponse({'status':"Updated Succeffuly"})
+    return redirect('cart')           
+    
+class checkout(View):
+    def get(self,request):
+        user=request.user
+        add=Customer.objects.filter(user=user)
+        cart_items=Cart.objects.filter(user=user)
+        famount=0
+        for p in cart_items:
+            value = p.product_qty * p.product.discount_price
+            famount=famount+value
+        totalamount=famount+40    
+        return render(request,"checkout.html",locals())
     
     
     
