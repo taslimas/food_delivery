@@ -29,6 +29,7 @@ urlpatterns=[
     path('removeitem/<int:pk>',views.removeItem,name='removeitem'),
     path('update-post',views.updateCart,name='updatecart'),
     path('pluscart/',views.plus_cart),
+    # path('paymentdone/',views.payment_done,name='paymentdone'),
     
     
     # forgot password

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Food,Customer,Cart
+from .models import *
 from django.http import JsonResponse
 # Create your views here.
 from .forms import CustomerRegistrationForm,LoginForm,CustomerProfileForm
@@ -13,8 +13,8 @@ from django.contrib.auth.views import PasswordResetView
 from django.db.models import Q
 from django.views import View
 from django.contrib.auth.decorators import login_required
-
-
+from django.conf import settings
+import razorpay
 
 
 
@@ -179,9 +179,7 @@ def plus_cart(request):
             }
         return JsonResponse(data)
         
-class checkout(View):
-    def get(self,request):
-        return render(request,"checkout.html",locals())    
+  
 
 def removeItem(request,pk):
     food=Food.objects.get(pk=pk)
@@ -208,7 +206,24 @@ class checkout(View):
         for p in cart_items:
             value = p.product_qty * p.product.discount_price
             famount=famount+value
-        totalamount=famount+40    
+        totalamount=famount+40  
+        razoramount=int(totalamount+100)
+        client = razorpay.Client(auth=(settings.RAZOR_KEY_ID,settings.RAZOR_KEY_SECRET))  
+        data = { "amount": razoramount, "currency": "INR", "receipt": "order_rcptid_12" }
+        payment_response = client.order.create(data=data)
+        print(payment_response)
+        # order_id=payment_response['id']
+        # order_status=payment_response['status']
+        # if order_status=='created':
+        #     payment=Payment(
+        #         user=user,
+        #         amount=totalamount,
+        #         razorpay_order_id=order_id,
+        #         razorpay_payment_status=order_status,
+                
+        #     )
+        #     payment.save()
+
         return render(request,"checkout.html",locals())
     
     

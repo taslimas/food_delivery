@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'cart',
+    'razorpay',
 ]
  
 CART_SESSION_ID = 'cart'
@@ -142,3 +143,7 @@ LOGIN_REDIRECT_URL='/profile/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+
+
+RAZOR_KEY_ID = "rzp_test_jleQ7fIVywjmO2"
+RAZOR_KEY_SECRET="DPYy5uiSxU68mRpNdGBlznZZ"
