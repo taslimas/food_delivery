@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
-
+from django.contrib.auth.models import Group
 @admin.register(Food)
 class FoodAdmin(admin.ModelAdmin):
     
@@ -23,3 +23,5 @@ class CartModelAdmin(admin.ModelAdmin):
 @admin.register(OrderPlaced)
 class CartModelAdmin(admin.ModelAdmin):
     list_display = ['id','user','customer','product','quantity','ordered_date','status','payment']    
+
+admin.site.unregister(Group)

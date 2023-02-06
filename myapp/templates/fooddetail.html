@@ -399,15 +399,18 @@ section {
                             <ul class="spe_ul"></ul>
                             <div class="_p-qty-and-cart">
                                 <div class="_p-add-cart">
-                                    <a class="btn-theme btn buy-btn" href="{% url 'cart' %}">
+                                    <!-- <a class="btn-theme btn buy-btn" href="{% url 'add-to-cart' food.id %}">
                                         <i class="fa fa-shopping-cart"></i> Order Now
-                                    </a>
+                                    </a> -->
 
 
                                     <a class="btn-theme btn btn-success addToCartBtn" href="{% url 'add-to-cart' food.id %}">
                                         <i class="fa fa-shopping-cart"></i> Add to Cart
 
                                     </a>
+                                    {% if whishlist %}
+                                    <a pid={{product.id}}></a>
+                                    {% endif %}
 
                                     <!-- <input type="hidden" name="pid" value="18" />
                             <input type="hidden" name="price" value="850" />

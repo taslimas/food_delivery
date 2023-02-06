@@ -20,15 +20,27 @@ import razorpay
 
 
 def index(request):
-    return render(request,'index.html')
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
+    return render(request,'index.html',locals())
 
 def about(request):
-    return render(request,'about.html')
+    totalitem=0
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
+        
+    return render(request,'about.html',locals())
 
 def contact(request):
-    return render(request,'contact.html')
+    totalitem=0
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
+    return render(request,'contact.html',locals())
 
 def category(request,val):
+    totalitem=0
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
     food=Food.objects.filter(category=val)
     name=Food.objects.filter(category=val).values('name')
     return render(request,'category.html',locals())
@@ -37,11 +49,16 @@ def category(request,val):
 def fooddetails(request,pk):
     food=Food.objects.get(pk=pk)
     food1=Food.objects.all()
+    totalitem=0
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
     return render(request,'fooddetail.html',locals())
 
 def category_title(request,val):
     food=Food.objects.filter(name=val)
     name=Food.objects.filter(category=food[0].category).values('name')
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
     return render(request,'category.html',locals())
 
 
@@ -75,6 +92,8 @@ def LoginView(request):
     return render(request,'login.html',locals())
 
 def ProfileView(request):
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
     if request.method=='GET':
         form=CustomerProfileForm()
         return render(request,'profile.html',locals())
@@ -97,12 +116,16 @@ def ProfileView(request):
 
 def Address(request):
     address=Customer.objects.filter(user=request.user)
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
     return render(request,'address.html',locals())
 
 def UpdateAddress(request,pk):
     if request.method=="GET":
         address=Customer.objects.get(pk=pk)
         form=CustomerProfileForm(instance=address)
+        if request.user.is_authenticated:
+            totalitem=len(Cart.objects.filter(user=request.user))
         return render(request,"updateaddress.html",locals())
     if request.method=="POST":
         form=CustomerProfileForm(request.POST)
@@ -151,6 +174,8 @@ def add_to_cart(request,pk):
 def show_cart(request):
    user=request.user
    cart=Cart.objects.filter(user=user)
+   if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
    print(user)
    amount=0
    for p in cart:
@@ -184,6 +209,8 @@ def plus_cart(request):
 def removeItem(request,pk):
     food=Food.objects.get(pk=pk)
     cart=Cart.objects.filter(product=food).delete()
+    totalitem=0
+    
     return redirect('cart')
 
 def updateCart(request):
@@ -223,7 +250,8 @@ class checkout(View):
                 
             )
             payment.save()
-
+        if request.user.is_authenticated:
+            totalitem=len(Cart.objects.filter(user=request.user))
         return render(request,"checkout.html",locals())
 
 def payment_done(request):
@@ -242,6 +270,23 @@ def payment_done(request):
         OrderPlaced(user=user,customer=customer,product=c.product,quantity=c.product_qty,payment=payment).save()
         c.delete()
     return redirect('orders')    
+
+
+def orders(request):
+    order_placed=OrderPlaced.objects.filter(user=request.user)
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
+    return render(request,'orders.html',locals())
+
+
+def search(request):
+     
+    query=request.GET['search']
+    if request.user.is_authenticated:
+        totalitem=len(Cart.objects.filter(user=request.user))
+    product=Food.objects.filter(name__contains=query)
+    
+    return render(request,"search.html",locals())
     
     
     

@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib import admin
 from .import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -31,8 +32,8 @@ urlpatterns=[
     path('update-post',views.updateCart,name='updatecart'),
     path('pluscart/',views.plus_cart),
     
-    path('orders/',views.index,name='orders'),
-    
+    path('orders/',views.orders,name='orders'),
+    path('search/',views.search,name='search'),
     
     # forgot password
     path('password_reset/',auth_view.PasswordResetView.as_view(template_name='password_reset.html', form_class=MypasswordResetForm),name='password_reset'),
@@ -43,3 +44,7 @@ urlpatterns=[
   
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+admin.site.site_header="Food Express"
+admin.site.site_title="Food Express"
+admin.site.site_index_title="Welcome to Food Express"
