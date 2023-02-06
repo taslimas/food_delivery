@@ -95,7 +95,7 @@ class Payment(models.Model):
     razorpay_order_id=models.CharField(max_length=100,blank=True,null=True)
     razorpay_payment_status=models.CharField(max_length=100,blank=True,null=True)
     razorpay_payment_id=models.CharField(max_length=100,blank=True,null=True)
-    paid=models.BooleanField()
+    paid=models.BooleanField(default=False)
         
     
 STATUS_CHOICES =(
@@ -105,13 +105,14 @@ STATUS_CHOICES =(
     ('Delivered','Deliverd'),('Cancel','Cancel'),('Pending','Pending'),
 )
 class OrderPlaced(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
-    product=models.ForeignKey(Food,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    customer=models.ForeignKey(Customer,on_delete=models.CASCADE,null=True)
+    product=models.ForeignKey(Food,on_delete=models.CASCADE,null=True)
+    payment=models.ForeignKey(Payment,on_delete=models.CASCADE,null=True)
     quantity=models.PositiveIntegerField(default=1)
     ordered_date=models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=50,choices=STATUS_CHOICES)
-    payment=models.ForeignKey(Payment,on_delete=models.CASCADE,default="")
+   
     
     @property
     def total_cost(self):

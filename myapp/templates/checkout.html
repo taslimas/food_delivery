@@ -19,8 +19,8 @@
             {% for item in cart_items %}
             <div class="card mb-2">
                 <div class="card-body">
-                    <h5>Product:{{item.product.title}}</h5>
-                    <p>Quantity:{{item.quantity}}</p>
+                    <h5>Product:{{item.product.name}}</h5>
+                    <p>Quantity:{{item.product_qty}}</p>
                     <p class="fw-blod">Price:{{item.product.discount_price}}</p>
                 </div>
             </div>
@@ -64,8 +64,8 @@
 
 {% block payment-gateway %}
 
-    <button id="rzp-button1">Pay</button>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+   
+<!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
 <script>
 var options = {
     "key": "rzp_test_jleQ7fIVywjmO2", // Enter the Key ID generated from the Dashboard
@@ -78,7 +78,7 @@ var options = {
     "handler":function(response){
         console.log("success")
         var form=document.getElementById('myform');
-        window.location.href='http://localhost:8000/paymentdone"order_id=${response.razorpay_order_id}&payment_id=${response.razorpay_payment_id}&cust_id=${form.elements["custid"].value}'
+        window.location.href='{% url 'paymentdone' %}?order_id='+ response.razorpay_order_id + '&payment_id=' + response.razorpay_payment_id + '&cust_id=' + form.elements["custid"].value
 
     },
    
@@ -87,6 +87,9 @@ var options = {
     }
 };
 var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed',function(response){
+    alert(response.error.description)
+})
 document.getElementById('rzp-button1').onclick = function(e){
     rzp1.open();
     e.preventDefault();

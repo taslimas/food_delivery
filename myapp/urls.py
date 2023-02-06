@@ -26,10 +26,12 @@ urlpatterns=[
     path('add-to-cart/<int:pk>',views.add_to_cart,name='add-to-cart'),
     path('cart',views.show_cart,name='cart'),
     path('checkout/',views.checkout.as_view(),name='checkout'),
+    path('paymentdone/',views.payment_done,name='paymentdone'),
     path('removeitem/<int:pk>',views.removeItem,name='removeitem'),
     path('update-post',views.updateCart,name='updatecart'),
     path('pluscart/',views.plus_cart),
-    # path('paymentdone/',views.payment_done,name='paymentdone'),
+    
+    path('orders/',views.index,name='orders'),
     
     
     # forgot password

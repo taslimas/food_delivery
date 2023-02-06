@@ -35,8 +35,8 @@ def category(request,val):
 
 
 def fooddetails(request,pk):
-    food1=Food.objects.all()
     food=Food.objects.get(pk=pk)
+    food1=Food.objects.all()
     return render(request,'fooddetail.html',locals())
 
 def category_title(request,val):
@@ -147,11 +147,11 @@ def add_to_cart(request,pk):
     food=Food.objects.get(pk=pk)
     Cart(user=user,product=food).save()
     return redirect('/cart')
-    
+@login_required(login_url='login')    
 def show_cart(request):
    user=request.user
    cart=Cart.objects.filter(user=user)
-   
+   print(user)
    amount=0
    for p in cart:
        value = p.product_qty * p.product.discount_price
@@ -207,25 +207,41 @@ class checkout(View):
             value = p.product_qty * p.product.discount_price
             famount=famount+value
         totalamount=famount+40  
-        razoramount=int(totalamount+100)
+        razoramount=int(totalamount*100)
         client = razorpay.Client(auth=(settings.RAZOR_KEY_ID,settings.RAZOR_KEY_SECRET))  
         data = { "amount": razoramount, "currency": "INR", "receipt": "order_rcptid_12" }
         payment_response = client.order.create(data=data)
         print(payment_response)
-        # order_id=payment_response['id']
-        # order_status=payment_response['status']
-        # if order_status=='created':
-        #     payment=Payment(
-        #         user=user,
-        #         amount=totalamount,
-        #         razorpay_order_id=order_id,
-        #         razorpay_payment_status=order_status,
+        order_id=payment_response['id']
+        order_status=payment_response['status']
+        if order_status=='created':
+            payment=Payment(
+                user=user,
+                amount=totalamount,
+                razorpay_order_id=order_id,
+                razorpay_payment_status=order_status,
                 
-        #     )
-        #     payment.save()
+            )
+            payment.save()
 
         return render(request,"checkout.html",locals())
-    
+
+def payment_done(request):
+    order_id=request.GET.get('order_id')
+    payment_id=request.GET.get('payment_id')    
+    cust_id=request.GET.get('cust_id')
+    user=request.user
+    print(user)
+    customer=Customer.objects.get(id=cust_id)
+    payment=Payment.objects.get(razorpay_order_id=order_id)
+    payment.paid=True
+    payment.razorpay_payment_id=payment_id
+    payment.save()
+    cart=Cart.objects.filter(user=user)
+    for c in cart:
+        OrderPlaced(user=user,customer=customer,product=c.product,quantity=c.product_qty,payment=payment).save()
+        c.delete()
+    return redirect('orders')    
     
     
     

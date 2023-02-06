@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <title>fooddelivery |{% block title %}{% endblock title %}</title> 
     <style>
         .bg-warning{
@@ -105,17 +106,19 @@
             </li>
             <li class="nav-item mx-2">
               <a href="{% url 'cart'  %}" class="nav-link text-dark">Cart</a>
-            </li>
+            </li> {% if request.user.is_authenticated %}
             <li class="nav-item mx-2">
               <a href="#" class="nav-link text-dark">Whishlist</a>
             </li>
+            {% else %}
             <li class="nav-item mx-2">
               <a href="{% url 'login' %}" class="nav-link text-dark">Login</a>
             </li>
+          
             <li class="nav-item mx-2">
               <a href="{% url 'customer-registration' %}" class="nav-link text-dark">Registration</a>
             </li>
-
+          {% endif %}
           </ul>
         </div>
       </nav>
