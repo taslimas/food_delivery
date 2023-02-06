@@ -213,13 +213,13 @@ def removeItem(request,pk):
     
     return redirect('cart')
 
-def updateCart(request):
+def updatecart(request):
     if request.method == 'POST':
         prod_id = int(request.POST.get('product_id'))
         if(Cart.objects.filter(user=request.user,product_id=prod_id)):
             prod_qty=int(request.POST.get('product_qty'))
             cart=Cart.objects.get(product_id=prod_id,user=request.user)
-            cart.quantity=prod_qty
+            cart. product_qty=prod_qty
             cart.save()
             return JsonResponse({'status':"Updated Succeffuly"})
     return redirect('cart')           
@@ -229,6 +229,7 @@ class checkout(View):
         user=request.user
         add=Customer.objects.filter(user=user)
         cart_items=Cart.objects.filter(user=user)
+        order_placed=OrderPlaced.objects.filter(user=request.user)
         famount=0
         for p in cart_items:
             value = p.product_qty * p.product.discount_price
@@ -252,6 +253,7 @@ class checkout(View):
             payment.save()
         if request.user.is_authenticated:
             totalitem=len(Cart.objects.filter(user=request.user))
+            
         return render(request,"checkout.html",locals())
 
 def payment_done(request):

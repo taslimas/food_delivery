@@ -49,4 +49,12 @@ class MypasswordResetForm(PasswordResetForm):
         
 class MySetPasswordForm(SetPasswordForm):
     new_password1=forms.CharField(label='New Password',widget=forms.PasswordInput(attrs={'autocomplte':'current-password','class':'form-control'}))
-    new_password2=forms.CharField(label='Confirm New Password',widget=forms.PasswordInput(attrs={'autocomplte':'current-password','class':'form-control'}))      
+    new_password2=forms.CharField(label='Confirm New Password',widget=forms.PasswordInput(attrs={'autocomplte':'current-password','class':'form-control'}))  
+ 
+PRODUCT_QUANTITY=[(i,str(i)) for i in range(1,21)] 
+class CartAddproductForm(forms.Form):
+    quantity = forms.TypedChoiceField(choices=PRODUCT_QUANTITY,coerce=int)
+    override = forms.BooleanField(required=False,initial=False,widget=forms.HiddenInput)
+    
+    
+        

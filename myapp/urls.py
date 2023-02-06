@@ -29,9 +29,9 @@ urlpatterns=[
     path('checkout/',views.checkout.as_view(),name='checkout'),
     path('paymentdone/',views.payment_done,name='paymentdone'),
     path('removeitem/<int:pk>',views.removeItem,name='removeitem'),
-    path('update-post',views.updateCart,name='updatecart'),
+    # path('update-post',views.updateCart,name='updatecart'),
     path('pluscart/',views.plus_cart),
-    
+    path('update-cart',views.updatecart,name='updatecart'),
     path('orders/',views.orders,name='orders'),
     path('search/',views.search,name='search'),
     
