@@ -19,11 +19,14 @@
             <div class="row">
                 <div class="col-sm-2">
                     <img src="{{op.product.food_image.url}}" alt="" class="img-fluid" height="100" width="100">
+                    
                 </div>
-                <div class="col-sm-7">
+               
+                <div class="col-sm-7"><br>
                     <p>Product:{{op.product.name}}</p>
                     <p>Quantity:{{op.quantity}}</p>
                     <p>Price:{{op.total_cost}}</p>
+                    <a class="btn btn-success" href="{% url 'review' op.product.id %}">Write Your Review</a><br>
                 </div>
                 <div class="col-sm-3">
                     <p>Order Status:{{op.status}}</p>
@@ -60,6 +63,7 @@
                 </div>
             </div>
             {% endfor %}
+            
         </div>
     </div>
 </div>

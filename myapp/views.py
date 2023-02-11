@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.http import JsonResponse,HttpResponse
 # Create your views here.
-from .forms import CustomerRegistrationForm,LoginForm,CustomerProfileForm
+from .forms import CustomerRegistrationForm,LoginForm,CustomerProfileForm,ReviewForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages   
 from django.contrib.auth import update_session_auth_hash
@@ -52,6 +52,8 @@ def fooddetails(request,pk):
     food=Food.objects.get(pk=pk)
     food1=Food.objects.all()
     totalitem=0
+    # Get the reviews
+    reviews = ReviewRating.objects.filter(product_id=food.id, status=True)
     if request.user.is_authenticated:
         totalitem=len(Cart.objects.filter(user=request.user))
     return render(request,'fooddetail.html',locals())
@@ -319,8 +321,10 @@ def payment_done(request):
 
 def orders(request):
     order_placed=OrderPlaced.objects.filter(user=request.user)
+    
     if request.user.is_authenticated:
         totalitem=len(Cart.objects.filter(user=request.user))
+        
     return render(request,'orders.html',locals())
 
 
@@ -407,7 +411,28 @@ def otp(request):
     context={'mobile':mobile}
     return render(request,"otp.html",context)
 
+def submit_review(request, pk):
+    user=Food(request.user)
+    product=Food.objects.get(pk=pk)
+    
+    review = ReviewRating.objects.filter(product=product)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST,instance=user)
+        if form.is_valid():
+            data = ReviewRating()
+            data.subject = form.cleaned_data['subject']
+            data.rating = form.cleaned_data['rating']
+            data.review = form.cleaned_data['review']
+            data.ip = request.META.get('REMOTE_ADDR')
+            data.product_id = product.id
+            data.user_id = request.user.id
+            data.save()
+            messages.success(request, 'Thank you! Your review has been submitted.')
+            return redirect('review',pk=product.id)
+    context={'product':product,'review':review}
+    return render (request,"review.html",context)    
 
+    
 
     
     

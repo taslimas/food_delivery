@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,UsernameField,PasswordResetForm,SetPasswordForm
 from django import forms
 from django.contrib.auth.models import User
-from .models import Customer,Food,Cart
+from .models import *
 
 
 class CustomerRegistrationForm(UserCreationForm):
@@ -56,5 +56,11 @@ class CartAddproductForm(forms.Form):
     quantity = forms.TypedChoiceField(choices=PRODUCT_QUANTITY,coerce=int)
     override = forms.BooleanField(required=False,initial=False,widget=forms.HiddenInput)
     
+    
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model=ReviewRating
+        fields=['subject','review','rating']
+            
     
         

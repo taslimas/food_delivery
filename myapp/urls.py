@@ -39,6 +39,8 @@ urlpatterns=[
     path('update-cart',views.updatecart,name='updatecart'),
     path('orders/',views.orders,name='orders'),
     path('search/',views.search,name='search'),
+    path('submit_review/<int:pk>/', views.submit_review, name='review'),
+
     
     # forgot password
     path('password_reset/',auth_view.PasswordResetView.as_view(template_name='password_reset.html', form_class=MypasswordResetForm),name='password_reset'),

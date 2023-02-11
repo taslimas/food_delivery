@@ -27,3 +27,5 @@ class CartModelAdmin(admin.ModelAdmin):
 admin.site.unregister(Group)
 
 admin.site.register(Profile)
+
+admin.site.register(ReviewRating)
