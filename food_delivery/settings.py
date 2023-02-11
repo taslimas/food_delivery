@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'cart',
     'razorpay',
+    'twilio',
 ]
  
 CART_SESSION_ID = 'cart'
@@ -143,7 +144,18 @@ LOGIN_REDIRECT_URL='/profile/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
-
+EMAIL_HOST_USER = 'tasliarshad11@gmail.com' 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587 
+EMAIL_USE_TLS = True 
+EMAIL_HOST_PASSWORD = "tasli@123"
 
 RAZOR_KEY_ID = "rzp_test_jleQ7fIVywjmO2"
 RAZOR_KEY_SECRET="DPYy5uiSxU68mRpNdGBlznZZ"
+
+
+ACCOUNT_SID='AC080fd35ec7ab5c73a3380f9a9bcab50b'
+AUTH_TOKEN='98e848c8e0b03d293de96ee44e73351d'
+COUNTRY_CODE='+91'
+TWILIO_WHATSAPP_NUMBER='whatsapp:+8113937394'
+TWILIO_PHONE_NUMBER='+18129432985'

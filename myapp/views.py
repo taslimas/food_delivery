@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import *
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 # Create your views here.
 from .forms import CustomerRegistrationForm,LoginForm,CustomerProfileForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -15,11 +15,13 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import razorpay
-
-
-
+import random
+from .helper import MessageHandler
+from django.contrib.auth.models import User
+from django.conf import  settings
 
 def index(request):
+    
     if request.user.is_authenticated:
         totalitem=len(Cart.objects.filter(user=request.user))
     return render(request,'index.html',locals())
@@ -186,7 +188,7 @@ def show_cart(request):
 
 def plus_cart(request):
     if request.method == 'GET':
-        prod_id = request.GET['product_id']
+        prod_id = request.GET['prod_id']
         c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
         c.product_qty+=1
         c.save()
@@ -203,6 +205,47 @@ def plus_cart(request):
             'totalamount':totalamount
             }
         return JsonResponse(data)
+    
+def minus_cart(request):
+    if request.method=='GET':
+        prod_id=request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.product_qty-=1
+        c.save()
+        user=request.user
+        cart=Cart.objects.filter(user=user)
+        amount=0
+        for p in cart:
+            value = p.product_qty * p.product.discount_price
+            amount= amount + value
+        totalamount= amount + 40  
+        data={
+            'quantity':c.product_qty,
+            'amount':amount,
+            'totalamount':totalamount
+            }
+        return JsonResponse(data)
+    
+def removecart(request):
+    if request.method=='GET':
+        prod_id=request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.delete()
+        user=request.user
+        cart=Cart.objects.filter(user=user)
+        amount=0
+        for p in cart:
+            value = p.product_qty * p.product.discount_price
+            amount= amount + value
+        totalamount= amount + 40  
+        data={
+            'quantity':c.product_qty,
+            'amount':amount,
+            'totalamount':totalamount
+            }
+        return JsonResponse(data)
+        
+            
         
   
 
@@ -289,8 +332,83 @@ def search(request):
     product=Food.objects.filter(name__contains=query)
     
     return render(request,"search.html",locals())
+
+
+# def register(request):
+#     if request.method=="POST":
+#         if User.objects.filter(username__iexact=request.POST['user_name']).exists():
+#             return HttpResponse("User already exists")
+
+#         user=User.objects.create(username=request.POST['user_name'])
+#         otp=random.randint(1000,9999)
+#         profile=Profile.objects.create(user=user,phone_number=request.POST['phone_number'],otp=f'{otp}')
+#         if request.POST['methodOtp']=="methodOtpWhatsapp":
+#             messagehandler=MessageHandler(request.POST['phone_number'],otp).send_otp_via_whatsapp()
+#         else:
+#             messagehandler=MessageHandler(request.POST['phone_number'],otp).send_otp_via_message()
+#         red=redirect(f'otp/{profile.uid}/')
+#         red.set_cookie("can_otp_enter",True,max_age=600)
+#         return red  
+#     return render(request,'register.html')
+
+
+
+# def otpVerify(request,uid):
+#     if request.method=="POST":
+#         profile=Profile.objects.get(uid=uid)     
+#         if request.COOKIES.get('can_otp_enter')!=None:
+#             if(profile.otp==request.POST['otp']):
+#                 red=redirect("/")
+#                 red.set_cookie('verified',True)
+#                 return red
+#             return HttpResponse("wrong otp")
+#         return HttpResponse("10 minutes passed")        
+#     return render(request,"otp.html",{'id':uid})
+
+def send_otp(request):
+    conn=http.client.HTTPSConnection("api.msg91.com")
+    authkey=settings.authkey
+    headers={
+        'content-type':'application/json'
+        
+    }
+    url="http://control.msg91.com/api/sendotp.php?otp"+otp+'&sender=ABC&message='+'Your otp is'+otp + '&mobile='+mobile+'&authkey='+authkey+'&country=91'
+    conn.request("GET",url,headers=headers)
+    res=conn.getresponse()
+    data=res.data()
+    return None
     
     
+def register(request):
+    if request.method=='POST':
+        # username=request.POST.get('username')
+        email=request.POST.get('email')
+        mobile=request.POST.get('mobile')
+        # password=request.POST.get('password1')
+        # password2=request.POST.get('password2')
+        # if password1 == password2:
+        check_user=User.objects.filter(email=email).first()
+        check_profile=Profile.objects.filter(mobile=mobile).first()
+        if check_user or check_profile:
+            context={"message":"User Already Exist","class":"danger"}
+            return render(request,"register.html",context)
+        user=User.objects.create(username=username,email=email,mobile=mobile)
+        user.save()
+        otp=str(randomrandint(1000,9999))
+        profile=Profile(user=user,mobile=mobile,otp=otp)
+        profile.save()
+        send_otp=(mobile,otp)
+        request.session['mobile'] = mobile
+        return redirect('otp')
+    return render(request,'register.html')  
+
+def otp(request):
+    mobile=request.session['mobile']  
+    context={'mobile':mobile}
+    return render(request,"otp.html",context)
+
+
+
     
     
     

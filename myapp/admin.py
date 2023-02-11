@@ -25,3 +25,5 @@ class CartModelAdmin(admin.ModelAdmin):
     list_display = ['id','user','customer','product','quantity','ordered_date','status','payment']    
 
 admin.site.unregister(Group)
+
+admin.site.register(Profile)

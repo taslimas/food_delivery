@@ -12,7 +12,7 @@
     <title>sign up</title> 
 <style>
     /*custom font*/
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
+/* @import url(https://fonts.googleapis.com/css?family=Montserrat); */
 
 /*basic reset*/
 * {margin: 0; padding: 0;}
@@ -115,6 +115,7 @@ input{
 					{{fm}}	<small class="text-dark">{{fm.errors|striptags}}</small>
                         
 					{% endfor %}
+					
 					<input type="submit" value="Submit" class="next action-button"/>
 
 					<div class="text-center text-dark fw-bold">
@@ -145,7 +146,7 @@ input{
 					form_fields[2].placeholder='Email..';
 					form_fields[3].placeholder='Enter password...';
 					form_fields[4].placeholder='Re-enter Password...';
-			
+					form_fields[5].placeholder='Phone Number...';
 			
 					for (var field in form_fields){	
 						form_fields[field].className += ' form-control'

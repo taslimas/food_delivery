@@ -4,7 +4,9 @@
   
 
 {% block main-content %}
-<style>
+
+
+<!-- <style>
     ._p-qty .decrease_ {
     position: relative;
     right: -5px;
@@ -16,7 +18,7 @@
     top: 3px;
     left: -5px;
 }
-</style>
+</style> -->
 <div class="container my-5">
     <div class="row">
         
@@ -29,7 +31,7 @@
                    
                     {% for item in cart %}
                    
-                    <div class="row product-data">
+                    <div class="row">
                         <div class="col-sm-3 text-center align-self-center">
                             <img src="{{item.product.food_image.url }}"  class="img-fluid img-thumbnail shadow-sm" height="150" width="150">
                         </div>
@@ -37,37 +39,18 @@
                             <div>
                 <h5>{{item.product.name}}</h5>
                 <p class="mb-2 text-muted small">{{item.product.description}}</p>
-              
-                <!-- <div class="my-3">
-                    <input type="hidden" class="prod_id" value="{{item.product_id}}">
-                    {% csrf_token %}
-
+                <div class="my-3">
                     <label for="quantity">Quantity:</label>
-                    
-                      <a class="minus-cart btn" pid={{item.product.id}}>-</a> -->
-                      <!-- <input type="text" name="quantity" class="form-control qty-input text-cente" value="{{item.product_qty}}"> -->
-                      <!-- <span id="quantity">{{item.product_qty}}</span>
-                      <a class="plus-cart btn" pid={{item.product.id}}>+</a>
-                    </div> -->
-                  
-                    <!-- <div class="col-md-2 my-auto"> -->
-                        <!-- <input type="hidden" class="prod_id" value="{{item.product.id}}"> -->
-                        <!-- {% csrf_token %} -->
-                       <!-- <label for="Quantity">Quantity</label> -->
-                       <!-- <div class="input-group-text-center mb-3" style="width:40px"> -->
-                    <!-- <button class="input-group-text changeQuantity decrement-btn" onclick="decrement()">-</button> -->
-                    <!-- <button onclick="increment()">+</button> -->
-                     <!-- <input type="text" id="counting" value="{{item.product_qty}}">  -->
-                    <!-- <h2 id="counting"></h2> -->
-                    <!-- <button onclick="decrement()">-</button> -->
-        <!-- </div> -->
-                    <!-- </div> -->
-                  <!-- <form action="/" method='POST'>
-                    {{form}}
-                    {% csrf_token %}
-                    
-                  </form> -->
-                   
+                    <a class="minus-cart btn" pid="{{item.product.id}}">
+                        <i class="fas fa-minus-square fa-lg"></i>
+                    </a>
+                    <span id="product_qty">{{item.product_qty}}</span>
+                    <a  class="plus-cart btn" pid="{{item.product.id}}">
+                        <i class="fas fa-plus-square fa-lg"></i>
+                    </a>
+                </div>
+              
+                 
                     <div class="d-flex justify-content-between">
                         <a href="{% url 'removeitem' item.product.id %}" class="remove-card btn btn-sm btn-secondary mr-3" pid={{item.product.id}}>Remove Item</a>
                         <p class="mb-0">
@@ -112,54 +95,7 @@
 
 </div>
 </div>
-<script>
-    ;(function($) {
-        $('.changeQuantity').click(function(e){
-            e.preventDefault();
-            var product_id = $(this).closest('.product-data').find('.prod_id').val();
-            var product_qty = $(this).closest('.product_data').find('.qty-input').val();
-            var token = $('input[name=csrfmiddlewaretoken]').val();
-            $ajax({
-                method:'POST',
-                url:'/update-cart',
-                data:{
-                    'product_id' : product_id,
-                    'product_qty' : product_qty,
-                    csrfmiddlewaretoekn:token
-             },
-                success:function(response){
-                    alertify.success(reponsive.status)
-                }
-            });
-        });
-    
-        })(jQuery);
 
-
-        
-    </script>
-    <script>
-        //initialising a variable name data
-        var data = 0;
-
-        //printing default value of data that is 0 in h2 tag
-        document.getElementById("counting").innerText = data;
-
-        //creation of increment function
-        function increment() {
-            data = data + 1;
-            document.getElementById("counting").innerText = data;
-        }
-        //creation of decrement function
-        function decrement() {
-            data = data - 1;
-            document.getElementById("counting").innerText = data;
-        }
-    </script>
-<script src="{% static 'js/myscript.js' %}"></script>
-<script src="{% static 'js/all.min.js' %}"></script>
-<script src="{% static 'js/owl.carousel.min' %}"></script>
- 
 
 
 {% endblock main-content %}

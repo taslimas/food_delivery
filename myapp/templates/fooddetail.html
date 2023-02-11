@@ -5,6 +5,7 @@
 
 {% block main-content %}
 
+
 <style>
   .picZoomer{
 	position: relative;
@@ -347,6 +348,19 @@ section {
 .sq_box span.wishlist i:hover {
     color: #fd7f34;
 }
+#my-form {
+    text-align: center;
+    padding: 5px;
+    border: 1px dotted #ccc;
+    margin: 2%;
+}
+.qty {
+    width: 40px;
+    height: 25px;
+    text-align: center;
+}
+input.qtyplus { width:25px; height:25px;}
+input.qtyminus { width:25px; height:25px;}
 </style>
 
 <section id="services" class="services section-bg">
@@ -393,7 +407,24 @@ section {
                            <div class="input-group text-center mb-3" style="width:130px">
                         <button class="input-group-text decrement-btn">-</button>
                     <input type="text" name="Quantity" class="form-control qty-input text-center" value="{{food.id}}"></div>
-                        </div> -->
+                    <button class="input-group-text increment-btn">+</button>
+                        </div>
+                         -->
+                        <!-- <form id='my-form' method='POST' class='quantity' action='#'>
+                            <input type='button' value='-' class='qtyminus minus' field='quantity' />
+                            <input type='text' name='quantity' value='0' class='qty' />
+                            <input type='button' value='+' class='qtyplus plus' field='quantity' />
+                          </form> -->
+
+                          <!-- <div class="_p-add-cart">
+                            <div class="_p-qty">
+                               <span>Add Quantity</span>
+                               <div class="value-button decrease_" id="" value="Decrease Value">-</div>
+                               <input type="number" name="qty" id="number" value="1" />
+                               <div class="value-button increase_" id="" value="Increase Value">+</div>
+                            </div>
+                         </div> -->
+                          
 
                         <div class="_p-features">
                             <span> Description About this product:- </span>
@@ -585,5 +616,29 @@ section {
 //         }
 //     });
 
-// </script>
+	
+        $('.decrease_').click(function () {
+            decreaseValue(this);
+        });
+        $('.increase_').click(function () {
+            increaseValue(this);
+        });
+        function increaseValue(_this) {
+            var value = parseInt($(_this).siblings('input#number').val(), 10);
+            value = isNaN(value) ? 0 : value;
+            value++;
+            $(_this).siblings('input#number').val(value);
+        }
+
+        function decreaseValue(_this) {
+            var value = parseInt($(_this).siblings('input#number').val(), 10);
+            value = isNaN(value) ? 0 : value;
+            value < 1 ? value = 1 : '';
+            value--;
+            $(_this).siblings('input#number').val(value);
+        }
+   
+
+
+ </script>
 {% endblock main-content %}
