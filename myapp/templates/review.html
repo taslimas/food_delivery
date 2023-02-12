@@ -6,16 +6,26 @@
 {% block main-content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{% static 'css/custom.css' %}"/>
+    
+
 <section class="section-content padding-y bg">
 	<div class="container">
         <div class="row">
+			<div class="col-sm-2 border-end mt-3">
+				<ul class="list-unstyled">
+					<li class="d-grid">
+						<a href="{% url 'orders' %}" class="btn btn-primary">Back</a>
+					</li>
+				</ul>
+			</div>
 			<div class="col-md-9">
+
 
 
 
 				<form action="{% url 'review' product.id %}" method="POST">
 					{% csrf_token %}
-					<h5 class="fw-bold mt-4">Write Your Review</h5>
+					<h5 class="fw-bold mt-4">Write Your Review on {{product.name}}</h5>
                     <hr>
 
 					<div>
@@ -67,14 +77,14 @@
 	</div>
 
 </header>
-
+<hr>
 {% for review in review %}
 				<article class="box mb-3">
 					<div class="icontext w-100">
 
 						<div class="text">
 							<span class="date text-muted float-md-right">{{review.updated_at}} </span>
-							<h6 class="mb-1">{{review.user.username}} </h6>
+							<h6 class="mb-1">{{review.user.username}} <a href="{% url 'review_delete' review.id %}" class="comfirm-delete"><i class="fas fa-trash"></i></a></h6>
 							<div class="rating-star">
 								<span>
 									<i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}" aria-hidden="true"></i>
@@ -93,6 +103,7 @@
 						</p>
 					</div>
 				</article>
+				<hr>
 {% endfor %}
 
 
@@ -101,5 +112,6 @@
 
         </div>
         </section>
+		
 
 {% endblock main-content %}

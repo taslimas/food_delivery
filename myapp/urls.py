@@ -9,9 +9,7 @@ from .forms import LoginForm,MypasswordResetForm,MySetPasswordForm
 
 urlpatterns=[
     path('',views.index,name='index'),
-    path('register/',views.register,name='register'),
-    path('otp/', views.otp, name='otp'),
-
+   
     path('about',views.about,name='about'),
     path('contact',views.contact,name='contact'),
     path('category/<slug:val>',views.category,name='category'),
@@ -28,18 +26,20 @@ urlpatterns=[
     path('logout/',auth_view.LogoutView.as_view(next_page='login'),name='logout'),
      #cart
     path('add-to-cart/<int:pk>',views.add_to_cart,name='add-to-cart'),
-    path('cart',views.show_cart,name='cart'),
+    path('cart/',views.show_cart,name='cart'),
     path('checkout/',views.checkout.as_view(),name='checkout'),
     path('paymentdone/',views.payment_done,name='paymentdone'),
     path('removeitem/<int:pk>',views.removeItem,name='removeitem'),
     # path('update-post',views.updateCart,name='updatecart'),
     path('pluscart/',views.plus_cart),
     path('minuscart/',views.minus_cart),
-    path('removecart/',views.removecart),
+    # path('removecart/',views.removecart),
     path('update-cart',views.updatecart,name='updatecart'),
     path('orders/',views.orders,name='orders'),
     path('search/',views.search,name='search'),
     path('submit_review/<int:pk>/', views.submit_review, name='review'),
+    
+    path('delete-review/<int:pk>/',views.DeleteReview, name='review_delete'),
 
     
     # forgot password
