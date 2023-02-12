@@ -108,6 +108,7 @@ input{
 			
 				<form action="" method="post" novalidate class="shadow p-5" id="msform">
 					<h2 class="fs-title text-white">Login</h2>
+					
 	  
 					{% csrf_token %}
 					{% for fm in form %}
@@ -116,6 +117,7 @@ input{
                         
 					{% endfor %}
 					<input type="submit" value="Login" class="next action-button"/>
+					
 
 					<div class="text-center text-dark fw-bold">
 						<small>
@@ -125,7 +127,7 @@ input{
 					
                     <div class="text-center text-dark fw-bold">
                         <small>New User?
-                            <a href="{% url 'customer-registration' %}" class="text-white">Create an Account</a>
+                            <a href="{% url 'email' %}" class="text-white">Create an Account</a>
                         </small>
 						
                     </div>

@@ -123,11 +123,11 @@ input{
 							<a href="{% url 'login' %}" class="text-white fw-bold fs-6 " style="margin-left:5px;">Login Now</a></small>
 						</small>
 				    </div>	
-		{% if form.non_field_errors %}
+		<!-- {% if form.non_field_errors %}
 			{% for er in form.non_field_errors %}
 			<p class="alert alert-danger my-3">{{er}}</p>
 			{% endfor %}
-	    {% endif %}
+	    {% endif %} -->
 
 	  	{% if messages %}
 	  		{% for msg in messages %}
@@ -146,12 +146,13 @@ input{
 					form_fields[2].placeholder='Email..';
 					form_fields[3].placeholder='Enter password...';
 					form_fields[4].placeholder='Re-enter Password...';
-					form_fields[5].placeholder='Phone Number...';
+					
 			
 					for (var field in form_fields){	
 						form_fields[field].className += ' form-control'
 					}
 				  </script>
+				 
 			
 </body>
 <!-- <form action=" "  method='POST' novalidate id="msform">

@@ -24,6 +24,8 @@ urlpatterns=[
     path('changepassword',views.ChangePassword,name='changepassword'),
     path('passwordchangedone',auth_view.PasswordChangeDoneView.as_view(template_name='passwordchangedone.html'),name='passwordchangedone'),
     path('logout/',auth_view.LogoutView.as_view(next_page='login'),name='logout'),
+    path('otp/',views.otp,name='otp'),
+    path('email/',views.email,name='email'),
      #cart
     path('add-to-cart/<int:pk>',views.add_to_cart,name='add-to-cart'),
     path('cart/',views.show_cart,name='cart'),

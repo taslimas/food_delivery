@@ -50,18 +50,20 @@ h2{
     
     <form method="POST">
         {% csrf_token %}
-        <h2>OTP VERIFICATION:</h2>
-  
-       
-        <input id="otp" type="text" name="otp" placeholder="Enter OTP...">
-        <button type="submit">Submit</button>
-        {% if messages %}
+        <div id="email_div" >
+
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email">
+           
+            <button type="submit" class="btn btn-white text-dark">Send OTP</button>
+            {% if messages %}
 	  		{% for msg in messages %}
 			<div class="alert alert-{{msg.tags}}" role="alert">
 				{{msg}}
 			</div>
             {% endfor %}
 	  	{% endif %}	
+        </div>
         </form>
       
 

@@ -148,10 +148,13 @@ EMAIL_HOST_USER = 'tasliarshad11@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587 
 EMAIL_USE_TLS = True 
-EMAIL_HOST_PASSWORD = "tasli@123"
+EMAIL_USE_SSL = False 
+EMAIL_HOST_PASSWORD = "tasli246486"
 
 RAZOR_KEY_ID = "rzp_test_jleQ7fIVywjmO2"
 RAZOR_KEY_SECRET="DPYy5uiSxU68mRpNdGBlznZZ"
+
+    
 
 
 # ACCOUNT_SID='AC080fd35ec7ab5c73a3380f9a9bcab50b'

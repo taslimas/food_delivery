@@ -19,7 +19,7 @@ import random
 from .helper import MessageHandler
 from django.contrib.auth.models import User
 from django.conf import  settings
-
+from django.core.mail import send_mail
 def index(request):
     
     if request.user.is_authenticated:
@@ -345,7 +345,7 @@ def submit_review(request, pk):
             data.user_id = request.user.id
             data.save()
            
-            messages.success(request, 'Thank you! Your review has been submitted.')
+            # messages.success(request, 'Thank you! Your review has been submitted.')
             return redirect('review',pk=product.id)
        
     context={'product':product,'review':review}
@@ -355,8 +355,40 @@ def DeleteReview(request,pk):
     review = ReviewRating.objects.get(pk=pk)
     review.delete()
     return redirect('orders')
+
+def email(request):
+    if request.method=='POST':
+        email=request.POST.get('email')
+        if email=="tasliarshad11@gmail.com":
+            messages.success(request,'Check Your Email!!')
+            return redirect('otp')
+        else: 
+            messages.info(request,'Invalid Email')
+            return redirect('email')
+    return render(request,'email.html',locals())        
+                
+        
     
     
+global no
+no=0
+def otp(request):
+    global no
+    
+    if request.method=='POST':
+        otp=request.POST.get('otp','')
+        
+        if otp=="{}".format(no):
+            messages.success(request,"Email Verified!!!")
+            return redirect('customer-registration')
+        else:
+            messages.info(request,"Invalid OTP")
+            return redirect('otp')
+    
+    no=random.randrange(1000,9999) 
+    send_mail("Your OTP Verification",'Your OTP is {}'.format(no),'tasliarshad11@gmail.com',['tasliarshad11@gmail.com'],fail_silently=False,)   
+    return render(request,'otp.html',{})
+      
     
     
     

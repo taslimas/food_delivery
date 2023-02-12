@@ -9,10 +9,10 @@ class CustomerRegistrationForm(UserCreationForm):
     email=forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
     password1=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    phone_number=forms.CharField(max_length=10)
+   
     class Meta:
         model=User
-        fields=['username','email','password1','password2','phone_number']
+        fields=['username','email','password1','password2']
         
     def save(self, commit=True):
         user = super(CustomerRegistrationForm, self).save(commit=False)
