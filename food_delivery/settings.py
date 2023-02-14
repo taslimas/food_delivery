@@ -149,7 +149,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587 
 EMAIL_USE_TLS = True 
 EMAIL_USE_SSL = False 
-EMAIL_HOST_PASSWORD = "tasli246486"
+EMAIL_HOST_PASSWORD = "xxxxxxxx"
 
 RAZOR_KEY_ID = "rzp_test_jleQ7fIVywjmO2"
 RAZOR_KEY_SECRET="DPYy5uiSxU68mRpNdGBlznZZ"
